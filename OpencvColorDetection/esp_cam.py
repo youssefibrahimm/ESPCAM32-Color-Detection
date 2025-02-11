@@ -1,26 +1,42 @@
 import cv2
+import argparse
 import requests
 import time
 from opencv_module.color_detection import process_shapes, determine_dominant_color 
 
-# ESP32 URL
-URL = "*************"
-AWB = True
 
 # Creating a single HTTP session
 session = requests.Session()
 
+# Argument parser setup
+def parse_args():
+    parser = argparse.ArgumentParser(description="Control ESP32 camera settings and detect objects.")
+    parser.add_argument(
+        "--url", 
+        type=str, 
+        required=True, 
+        help="URL of the ESP32 camera, e.g., http://<ip_address>"
+    )
+    parser.add_argument(
+        "--AWB",
+        type=bool,
+        required=False,
+        default=True,
+        help="Auto white balance"
+    )
+    return parser.parse_args()
+
 # OpenCV setup
-cam = cv2.VideoCapture(f"{URL}:81/stream")
-fps = cam.get(cv2.CAP_PROP_FPS)
-print(f"Camera frame rate: {fps} FPS")
+def initialize_camera(url):
+    cam = cv2.VideoCapture(f"{url}/stream")
+    fps = cam.get(cv2.CAP_PROP_FPS)
+    print(f"Camera frame rate: {fps} FPS")
 
+    if not cam.isOpened():
+        print("Error: Could not open video stream.")
+        exit(1)
 
-# Check if video stream is opened
-if not cam.isOpened():
-    print("Error: Could not open video stream.")
-    exit(1)
-
+    return cam
 
 def set_resolution(url: str, index: int = 1, verbose: bool = False):
     try:
@@ -84,10 +100,18 @@ def get_gpio_state(url: str):
         print(f"An error occurred: {err}")
 
 def main():
-    set_resolution(URL, index=9)  # Set initial resolution 
-    set_quality(URL, value=10)  # Set initial quality
-    set_gpio_state(URL, 13, 0)  # Set initial GPIO state for pin
-    set_gpio_state(URL, 14, 0)  # Set initial GPIO state for pin
+    # Parse arguments
+    args = parse_args()
+    URL = args.url
+    AWB = args.AWB
+
+    # Initialize camera and set initial configurations
+    cam = initialize_camera(URL)
+    set_resolution(URL, index=9) 
+    set_quality(URL, value=10)  
+    set_gpio_state(URL, 13, 0) 
+    set_gpio_state(URL, 14, 0)
+    
     # Initialize flags before the loop
     object_printed = False
     color_printed = False

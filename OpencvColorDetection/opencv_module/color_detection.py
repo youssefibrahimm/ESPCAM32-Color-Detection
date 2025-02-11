@@ -2,11 +2,6 @@ import numpy as np
 import cv2
 import time
 
-# color_bounds = {
-#     'Green': {'lower': np.array([57, 64, 55]), 'upper': np.array([77, 255, 255])},
-#     'Blue': {'lower': np.array([100, 150, 0], np.uint8), 'upper': np.array([140, 255, 255], np.uint8)}
-# }
-
 color_bounds = {
     'Green': {'lower': np.array([40, 100, 50]), 'upper': np.array([80, 255, 255])},
     'Blue': {'lower': np.array([90, 150, 50]), 'upper': np.array([120, 255, 255])}
