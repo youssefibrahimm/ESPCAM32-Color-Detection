@@ -28,7 +28,7 @@ def parse_args():
 
 # OpenCV setup
 def initialize_camera(url):
-    cam = cv2.VideoCapture(f"{url}/stream")
+    cam = cv2.VideoCapture(url+ ":81/stream")
     fps = cam.get(cv2.CAP_PROP_FPS)
     print(f"Camera frame rate: {fps} FPS")
 
