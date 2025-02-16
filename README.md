@@ -7,12 +7,13 @@ This repository contains code for an **ESP-CAM32-based color detection system** 
 ```
 ├── .gitignore
 ├── EspCamWebServer
-    ├── CameraWebServer.ino
-    ├── app_httpd.cpp
-    ├── camera_index.h
-    ├── camera_pins.h
-    ├── ci.json
-    └── partitions.csv
+    ├── CameraWebServer
+        ├── CameraWebServer.ino
+        ├── app_httpd.cpp
+        ├── camera_index.h
+        ├── camera_pins.h
+        ├── ci.json
+        └── partitions.csv
 ├── OpencvColorDetection
     ├── esp_cam.py
     └── opencv_module
